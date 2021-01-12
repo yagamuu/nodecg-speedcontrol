@@ -22,7 +22,7 @@
       <template v-slot:activator="{ on }">
         <span v-on="on">
           <v-btn
-            :disabled="state === 'finished' || !checklistComplete"
+            :disabled="state === 'finished' || (isEnabledForceCheck && !checklistComplete)"
             @click="button"
           >
             <v-icon v-if="state === 'running'">
@@ -43,6 +43,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Configschema } from '../../../../configschema';
 import { nodecg } from '../../_misc/nodecg';
 import { store } from '../../_misc/replicant-store';
 import { CheckList } from '../../../../types';
@@ -60,6 +61,10 @@ export default Vue.extend({
     },
     checklist(): CheckList {
       return store.state.checklist;
+    },
+    isEnabledForceCheck(): boolean {
+      const config = (nodecg.bundleConfig as Configschema).checklist;
+      return config.enabled && config.items && config.forceCheckBeforeStartTimer;
     },
   },
   watch: {

@@ -1,17 +1,27 @@
 <i18n>
 {
   "en": {
-    "panelTitle": "Checklist"
+    "panelTitle": "Checklist",
+    "notEnabled": "Checklist is not enabled.",
+    "emptyItems": "Checklist is empty."
   },
   "ja": {
-    "panelTitle": "チェックリスト"
+    "panelTitle": "チェックリスト",
+    "notEnabled": "チェックリストが有効になっていません。",
+    "emptyItems": "チェックリストが空です。"
   }
 }
 </i18n>
 
 <template>
   <v-app>
-    <div>
+    <div v-if="!config.enabled">
+      {{ $t('notEnabled') }}
+    </div>
+    <div v-else>
+      <div v-if="checklist.length === 0">
+        {{ $t('emptyItems') }}
+      </div>
       <v-switch
         v-for="checkbox in checklist"
         :key="checkbox.name"
@@ -26,6 +36,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { Configschema } from '../../../configschema';
 import { store } from '../_misc/replicant-store';
 import { CheckList } from '../../../types';
 
@@ -35,6 +46,9 @@ export default Vue.extend({
     return {};
   },
   computed: {
+    config(): Configschema['checklist'] {
+      return nodecg.bundleConfig.checklist;
+    },
     checklist(): CheckList {
       return store.state.checklist;
     },
