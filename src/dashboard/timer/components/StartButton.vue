@@ -22,7 +22,7 @@
       <template v-slot:activator="{ on }">
         <span v-on="on">
           <v-btn
-            :disabled="state === 'finished'"
+            :disabled="state === 'finished' || !checklistComplete"
             @click="button"
           >
             <v-icon v-if="state === 'running'">
@@ -45,12 +45,28 @@
 import Vue from 'vue';
 import { nodecg } from '../../_misc/nodecg';
 import { store } from '../../_misc/replicant-store';
+import { CheckList } from '../../../../types';
 
 export default Vue.extend({
   name: 'StartButton',
+  data() {
+    return {
+      checklistComplete: false,
+    };
+  },
   computed: {
     state(): string {
       return store.state.timer.state;
+    },
+    checklist(): CheckList {
+      return store.state.checklist;
+    },
+  },
+  watch: {
+    checklist(val): void {
+      if (val) {
+        this.checklistComplete = val.every((checkbox) => checkbox.complete);
+      }
     },
   },
   methods: {
