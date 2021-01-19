@@ -178,6 +178,7 @@ async function importSchedule(marathonShort: string, useJapanese: boolean): Prom
           social: {
             twitch: runner.twitchName ?? undefined,
           },
+          externalID: runner.id.toString(),
         };
         if (!config.oengus.disableSpeedrunComLookup) {
           const data = await searchForUserDataMultiple(

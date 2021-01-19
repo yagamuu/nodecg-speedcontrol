@@ -79,6 +79,9 @@
                       "type": "string"
                     }
                   }
+                },
+                "externalID" : {
+                  "type" : "string"
                 }
               },
               "required": [
