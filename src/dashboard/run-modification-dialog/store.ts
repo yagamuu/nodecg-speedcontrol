@@ -19,6 +19,7 @@ const defaultRunData: RunData = {
   teams: [],
   customData: {},
   id: uuid(),
+  externalID: uuid(),
 };
 
 const defaultTeam: RunDataTeam = {
